@@ -1,0 +1,228 @@
+html<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>Financiera Gasa</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="style.css"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="contenido/icono.png">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+
+</head>
+<body>
+
+<div class="bg"></div>
+
+<header>
+
+    <div class="container">
+
+        <div class="nav">
+
+            <div class="logo">
+                <a href="index.html">
+                 <img src="contenido/logotipo.png" width="180" alt="Logo de Financiera Gasa" class="logo-image"/>
+                </a>
+            </div>
+
+            <ul class="nav-links" id="nav-links">
+
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="index.html">Quiénes Somos</a></li>
+                <li><a href="servicios.html">Servicios</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="faqs.html">Preguntas Frecuentes</a></li>
+
+                <a href="formulario.html" class="btn mobile-btn">
+                    Solicita un crédito
+                </a>
+
+            </ul>
+
+            <a href="formulario.html" class="btn desktop-btn">
+                Solicita un crédito
+            </a>
+
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section class="servicio">
+
+    <div class="servicio-container">
+
+        <!-- TEXTO -->
+
+        <div class="servicio-content">
+
+            <span class="servicio-tag">
+                SERVICIO
+            </span>
+
+            <h2>
+                PRÉSTAMO PERSONAL
+            </h2>
+
+            <h3>
+                DINERO RÁPIDO, SIN COMPLICACIONES
+            </h3>
+
+            <p class="servicio-text">
+                Préstamos personales fáciles y confiables.
+            </p>
+
+            <!-- BENEFICIOS -->
+
+            <div class="beneficios">
+
+                <div class="beneficio">
+                    <span>✓</span>
+                    Respuesta inmediata
+                </div>
+
+                <div class="beneficio">
+                    <span>✓</span>
+                    Pocos requisitos
+                </div>
+
+                <div class="beneficio">
+                    <span>✓</span>
+                    Trámite sencillo
+                </div>
+
+                <div class="beneficio">
+                    <span>✓</span>
+                    Atención directa
+                </div>
+
+            </div>
+
+            <!-- MONTO -->
+
+            <div class="monto-box">
+
+                <p>
+                    Desde
+                </p>
+
+                <h4>
+                    $3,000 hasta $15,000+
+                </h4>
+
+            </div>
+
+            <!-- USOS -->
+
+            <div class="usos">
+
+                <p class="usos-title">
+                    Úsalo para:
+                </p>
+
+                <div class="usos-grid">
+
+                    <div class="uso-item">Emergencias</div>
+                    <div class="uso-item">Pago de pendientes</div>
+                    <div class="uso-item">Gastos personales</div>
+                    <div class="uso-item">Impulsar tu negocio</div>
+
+                </div>
+
+            </div>
+
+            <p class="servicio-footer">
+                Rápido, claro y seguro.
+            </p>
+
+            <a href="formulario.html" class="servicio-btn">
+                Solicitar ahora
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-content">
+
+            <div class="footer-logo">
+                <a href="index.html">
+                    <img src="contenido/logotipoblanco.png" width="200" alt="Logo de Financiera Gasa" class="logo-image"/>
+                </a>
+            </div>
+
+            <p class="footer-text">
+                Soluciones financieras inmediatas y confiables.
+            </p>
+
+            <div class="footer-menu">
+
+                <a href="index.html#inicio">Inicio</a>
+                <a href="index.html#nosotros">Quiénes Somos</a>
+                <a href="servicios.html">Servicios</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="faqs.html">Preguntas Frecuentes</a>
+                <a href="aviso-privacidad.html">Aviso de Privacidad</a>
+            </div>
+
+            <div class="footer-socials">
+
+                <a href="https://wa.me/526624531221" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+
+                <a href="https://www.facebook.com/profile.php?id=61567221660085" target="_blank">
+                    <i class="fa-brands fa-facebook-f"></i>
+                </a>
+
+                <a href="mailto:info@financieragasa.com" target="_blank">
+                    <i class="fa-solid fa-envelope"></i>
+                </a>
+
+            </div>
+
+            <div class="copy">
+                © 2026 FINANCIERA GASA — Todos los derechos reservados.
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+<script>
+
+const menuToggle = document.getElementById('menu-toggle');
+const navLinks = document.getElementById('nav-links');
+
+menuToggle.addEventListener('click', () => {
+
+    menuToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+
+});
+
+</script>
+
+</body>
+</html>
