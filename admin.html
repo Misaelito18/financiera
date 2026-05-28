@@ -354,16 +354,17 @@ console.log("Error URL:", url);
 
 console.log("ARCHIVOS A BORRAR:", archivos);
 
+archivos.forEach(a => console.log(a));
+
 /* BORRAR ARCHIVOS */
 if(archivos.length > 0){
 
-const { data, error } = await supabaseClient
+const resultado = await supabaseClient
 .storage
 .from("documentos")
 .remove(archivos);
 
-console.log("REMOVE DATA:", data);
-console.log("REMOVE ERROR:", error);
+console.log("RESULTADO COMPLETO:", resultado);
 
 if(error){
 alert(error.message);
