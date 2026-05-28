@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel Admin Nivel Banco - Solicitudes</title>
+<title>Panel Admin - Solicitudes</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -188,11 +188,27 @@ border:1px solid rgba(255,255,255,.1);
 
 <!-- SIDEBAR -->
 <div class="sidebar hidden" id="app">
-  <h2>🏦 Panel Banco</h2>
+  <h2>🏦 Panel Solicitudes</h2>
   <div class="menu">
     <a href="#">Solicitudes</a>
   </div>
+
+  <button class="btn" onclick="logout()" style="width:100%;">
+Cerrar sesión
+</button>
+
+    <button class="btn"
+onclick="borrarTodo()"
+style="
+width:100%;
+margin-top:10px;
+background:#dc2626;
+">
+Borrar Todo
+</button>
+
 </div>
+
 
 <!-- MAIN -->
 <div class="main hidden" id="main">
@@ -223,6 +239,25 @@ const supabaseClient = supabase.createClient(
 
 let dataGlobal = [];
 
+/* VERIFICAR SESIÓN ACTIVA */
+checkSession();
+
+async function checkSession(){
+
+const { data } = await supabaseClient.auth.getSession();
+
+if(data.session){
+
+document.getElementById("login").style.display="none";
+document.getElementById("app").classList.remove("hidden");
+document.getElementById("main").classList.remove("hidden");
+
+loadData();
+
+}
+
+}
+
 /* LOGIN */
 async function login(){
 
@@ -246,13 +281,111 @@ document.getElementById("main").classList.remove("hidden");
 loadData();
 }
 
+/* CERRAR SESIÓN */
+async function logout(){
+
+await supabaseClient.auth.signOut();
+
+location.reload();
+
+}
+
+/* BORRAR TODO */
+async function borrarTodo(){
+
+const confirmar = confirm(
+"¿Seguro que deseas borrar TODAS las solicitudes y archivos?"
+);
+
+if(!confirmar) return;
+
+try{
+
+/* OBTENER SOLICITUDES */
+const { data: solicitudes, error: errorData } = await supabaseClient
+  .from("solicitudes")
+  .select("*");
+
+if(errorData){
+  alert(errorData.message);
+  return;
+}
+
+/* LISTA ARCHIVOS */
+let archivos = [];
+
+solicitudes.forEach(d => {
+
+[
+d.ine_frente_url,
+d.ine_reverso_url,
+d.domicilio_url,
+d.ingresos_url,
+d.aval_ine_frente_url,
+d.aval_ine_reverso_url,
+d.aval_domicilio_url
+].forEach(url => {
+
+if(url){
+
+/* EXTRAER PATH */
+const path = url.split("/storage/v1/object/public/documentos/")[1];
+
+if(path){
+archivos.push(path);
+}
+
+}
+
+});
+
+});
+
+/* BORRAR ARCHIVOS */
+if(archivos.length > 0){
+
+const { error: errorStorage } = await supabaseClient
+.storage
+.from("documentos")
+.remove(archivos);
+
+if(errorStorage){
+console.log(errorStorage);
+}
+
+}
+
+/* BORRAR TABLA */
+const { error: errorDelete } = await supabaseClient
+.from("solicitudes")
+.delete()
+.neq("id",0);
+
+if(errorDelete){
+alert(errorDelete.message);
+return;
+}
+
+alert("Todo eliminado correctamente");
+
+loadData();
+
+}catch(err){
+
+console.log(err);
+alert("Error al borrar");
+
+}
+
+}
+
 /* DATA */
 async function loadData(){
 
 const { data, error } = await supabaseClient
   .from("solicitudes")
   .select("*")
-  .order("id", { ascending: false });
+  .order("created_at", { ascending: false });
 
 if(error){
 alert(error.message);
@@ -263,6 +396,27 @@ dataGlobal = data;
 render(data);
 }
 
+/* CAMBIAR ESTATUS */
+async function cambiarEstatus(id, estatus){
+
+const { data, error } = await supabaseClient
+  .from("solicitudes")
+  .update({ estatus: estatus })
+  .eq("id", id)
+  .select();
+
+console.log("DATA:", data);
+console.log("ERROR:", error);
+
+if(error){
+  alert(error.message);
+  return;
+}
+
+await loadData();
+
+}
+
 /* RENDER LISTA */
 function render(data){
 
@@ -271,26 +425,108 @@ grid.innerHTML="";
 
 data.forEach(d => {
 
+let color = "#f59e0b";
+
+const fecha = new Date(d.created_at).toLocaleString("es-MX", {
+  timeZone: "America/Hermosillo",
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit"
+});
+
+if(!d.estatus){
+d.estatus = "En revisión";
+}
+
+if(d.estatus === "Aprobado"){
+color = "#22c55e";
+}
+
+if(d.estatus === "Rechazado"){
+color = "#ef4444";
+}
+
 grid.innerHTML += `
 <div class="card">
-  <div class="badge">${d.tipo_ingreso || "-"}</div>
-  <h3>${d.nombre}</h3>
-  <p>${d.telefono}</p>
 
-  <button class="btn" onclick='ver(${JSON.stringify(d)})'>
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+  ">
+
+    <div class="badge">
+      ${d.tipo_ingreso || "-"}
+    </div>
+
+    <div style="
+      background:${color};
+      color:white;
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+    ">
+      ${d.estatus || "En revisión"}
+    </div>
+
+  </div>
+
+  <h3>${d.nombre || "-"}</h3>
+  <p>${d.telefono || "-"}</p>
+  <p>📅 ${fecha}</p>
+
+  <div style="
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  ">
+
+    <button class="btn"
+      onclick='cambiarEstatus(${d.id},"En revisión")'>
+      En revisión
+    </button>
+
+    <button class="btn"
+      style="background:#16a34a;"
+      onclick='cambiarEstatus(${d.id},"Aprobado")'>
+      Aprobar
+    </button>
+
+    <button class="btn"
+      style="background:#dc2626;"
+      onclick='cambiarEstatus(${d.id},"Rechazado")'>
+      Rechazar
+    </button>
+
+  </div>
+
+  <button class="btn"
+    onclick='ver(${JSON.stringify(d)})'
+    style="width:100%;margin-top:14px;">
     Ver solicitud
   </button>
+
 </div>
 `;
 
 });
+
 }
 
 /* FILTRO */
 function filtrar(v){
-render(dataGlobal.filter(x =>
-x.nombre.toLowerCase().includes(v.toLowerCase())
-));
+
+render(
+dataGlobal.filter(x =>
+(x.nombre || "").toLowerCase().includes(v.toLowerCase())
+)
+);
+
 }
 
 /* MODAL */
@@ -310,8 +546,6 @@ document.getElementById("modalContent").innerHTML = `
         color:#000;
     ">
 
-        <!-- HEADER -->
-
         <h1 style="
             color:#000;
             margin-bottom:10px;
@@ -326,8 +560,6 @@ document.getElementById("modalContent").innerHTML = `
         ">
             Se recibió una nueva solicitud desde el sitio web.
         </p>
-
-        <!-- DATOS PERSONALES -->
 
         <h2 style="
             color:#000;
@@ -344,22 +576,20 @@ document.getElementById("modalContent").innerHTML = `
 
             <tr>
                 <td><b>Nombre</b></td>
-                <td>{{nombre}}</td>
+                <td>${d.nombre || "-"}</td>
             </tr>
 
             <tr>
                 <td><b>Teléfono</b></td>
-                <td>{{telefono}}</td>
+                <td>${d.telefono || "-"}</td>
             </tr>
 
             <tr>
               <td><b>Teléfono 2</b></td>
-              <td>{{telefono2}}</td>
+              <td>${d.telefono2 || "-"}</td>
             </tr>
-          
-        </table>
 
-        <!-- INFORMACIÓN FINANCIERA -->
+        </table>
 
         <h2 style="
             color:#000;
@@ -376,22 +606,40 @@ document.getElementById("modalContent").innerHTML = `
 
             <tr>
                 <td><b>Tipo de ingresos</b></td>
-                <td>{{tipo_ingreso}}</td>
+                <td>${d.tipo_ingreso || "-"}</td>
             </tr>
 
             <tr>
                 <td><b>Actividad independiente</b></td>
-                <td>{{actividad_independiente}}</td>
+                <td>${d.actividad_independiente || "-"}</td>
             </tr>
 
             <tr>
                 <td><b>Descripción ingresos</b></td>
-                <td>{{descripcion_ingresos}}</td>
+                <td>${d.descripcion_ingresos || "-"}</td>
+            </tr>
+
+            <tr>
+                <td><b>Dirección de trabajo</b></td>
+                <td>${d.direccion_trabajo || "-"}</td>
+            </tr>
+
+            <tr>
+                <td><b>Horario de trabajo</b></td>
+                <td>${d.horario_trabajo || "-"}</td>
+            </tr>
+
+            <tr>
+                <td><b>Puesto</b></td>
+                <td>${d.puesto_trabajo || "-"}</td>
+            </tr>
+
+            <tr>
+                <td><b>Empresa o negocio</b></td>
+                <td>${d.empresa_trabajo || "-"}</td>
             </tr>
 
         </table>
-
-        <!-- DOCUMENTOS SOLICITANTE -->
 
         <h2 style="
             color:#000;
@@ -408,7 +656,7 @@ document.getElementById("modalContent").innerHTML = `
             margin-bottom:40px;
         ">
 
-            <a href="{{ine_frente}}" target="_blank" style="
+            <a href="${d.ine_frente_url || '#'}" target="_blank" style="
                 background:#eef5ff;
                 padding:14px 18px;
                 border-radius:14px;
@@ -420,7 +668,7 @@ document.getElementById("modalContent").innerHTML = `
                 Ver INE Frente
             </a>
 
-            <a href="{{ine_reverso}}" target="_blank" style="
+            <a href="${d.ine_reverso_url || '#'}" target="_blank" style="
                 background:#eef5ff;
                 padding:14px 18px;
                 border-radius:14px;
@@ -432,7 +680,7 @@ document.getElementById("modalContent").innerHTML = `
                 Ver INE Reverso
             </a>
 
-            <a href="{{domicilio}}" target="_blank" style="
+            <a href="${d.domicilio_url || '#'}" target="_blank" style="
                 background:#eef5ff;
                 padding:14px 18px;
                 border-radius:14px;
@@ -444,7 +692,7 @@ document.getElementById("modalContent").innerHTML = `
                 Ver Comprobante de Domicilio
             </a>
 
-            <a href="{{ingresos_file}}" target="_blank" style="
+            <a href="${d.ingresos_url || '#'}" target="_blank" style="
                 background:#eef5ff;
                 padding:14px 18px;
                 border-radius:14px;
@@ -457,8 +705,6 @@ document.getElementById("modalContent").innerHTML = `
             </a>
 
         </div>
-
-        <!-- DATOS DEL AVAL -->
 
         <div style="
             padding:24px;
@@ -483,24 +729,22 @@ document.getElementById("modalContent").innerHTML = `
 
                 <tr>
                     <td><b>Nombre del aval</b></td>
-                    <td>{{aval_nombre}}</td>
+                    <td>${d.aval_nombre || "-"}</td>
                 </tr>
 
                 <tr>
                     <td><b>Teléfono del aval</b></td>
-                    <td>{{aval_telefono}}</td>
+                    <td>${d.aval_telefono || "-"}</td>
                 </tr>
 
                 <tr>
                     <td><b>Teléfono 2 Aval</b></td>
-                    <td>{{aval_telefono2}}</td>
+                    <td>${d.aval_telefono2 || "-"}</td>
                 </tr>
 
             </table>
 
         </div>
-
-        <!-- DOCUMENTOS DEL AVAL -->
 
         <h2 style="
             color:#000;
@@ -516,7 +760,7 @@ document.getElementById("modalContent").innerHTML = `
             margin-top:20px;
         ">
 
-            <a href="{{aval_ine_frente}}" target="_blank" style="
+            <a href="${d.aval_ine_frente_url || '#'}" target="_blank" style="
                 background:#eef5ff;
                 padding:14px 18px;
                 border-radius:14px;
@@ -528,7 +772,7 @@ document.getElementById("modalContent").innerHTML = `
                 Ver INE Frente Aval
             </a>
 
-            <a href="{{aval_ine_reverso}}" target="_blank" style="
+            <a href="${d.aval_ine_reverso_url || '#'}" target="_blank" style="
                 background:#eef5ff;
                 padding:14px 18px;
                 border-radius:14px;
@@ -540,7 +784,7 @@ document.getElementById("modalContent").innerHTML = `
                 Ver INE Reverso Aval
             </a>
 
-            <a href="{{aval_domicilio}}" target="_blank" style="
+            <a href="${d.aval_domicilio_url || '#'}" target="_blank" style="
                 background:#eef5ff;
                 padding:14px 18px;
                 border-radius:14px;
@@ -553,8 +797,6 @@ document.getElementById("modalContent").innerHTML = `
             </a>
 
         </div>
-
-        <!-- FOOTER -->
 
         <div style="
             margin-top:45px;
