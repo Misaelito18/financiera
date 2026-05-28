@@ -333,13 +333,16 @@ try{
 /* EXTRAER PATH REAL */
 const u = new URL(url);
 
-let path = u.pathname.split("/object/public/documentos/")[1];
+const partes = u.pathname.split("/documentos/");
 
-/* QUITAR %20 Y COSAS RARAS */
-path = decodeURIComponent(path);
+if(partes[1]){
 
-if(path){
+const path = decodeURIComponent(partes[1]);
+
+console.log("PATH REAL:", path);
+
 archivos.push(path);
+
 }
 
 }catch(err){
@@ -359,15 +362,17 @@ archivos.forEach(a => console.log(a));
 /* BORRAR ARCHIVOS */
 if(archivos.length > 0){
 
-const resultado = await supabaseClient
+const { data, error } = await supabaseClient
 .storage
 .from("documentos")
 .remove(archivos);
 
-console.log("RESULTADO COMPLETO:", resultado);
+console.log("REMOVE DATA:", data);
+console.log("REMOVE ERROR:", error);
 
 if(error){
 alert(error.message);
+return;
 }
 
 }
