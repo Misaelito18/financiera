@@ -328,29 +328,45 @@ d.aval_domicilio_url
 
 if(url){
 
-/* EXTRAER PATH */
-const path = url.split("/storage/v1/object/public/documentos/")[1];
+try{
+
+/* EXTRAER PATH REAL */
+const u = new URL(url);
+
+let path = u.pathname.split("/object/public/documentos/")[1];
+
+/* QUITAR %20 Y COSAS RARAS */
+path = decodeURIComponent(path);
 
 if(path){
 archivos.push(path);
 }
 
+}catch(err){
+console.log("Error URL:", url);
+}
+
 }
 
 });
 
 });
 
+console.log("ARCHIVOS A BORRAR:", archivos);
+
 /* BORRAR ARCHIVOS */
 if(archivos.length > 0){
 
-const { error: errorStorage } = await supabaseClient
+const { data, error } = await supabaseClient
 .storage
 .from("documentos")
 .remove(archivos);
 
-if(errorStorage){
-console.log(errorStorage);
+console.log("REMOVE DATA:", data);
+console.log("REMOVE ERROR:", error);
+
+if(error){
+alert(error.message);
 }
 
 }
