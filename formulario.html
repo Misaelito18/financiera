@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css"/>
+<title>Financiera Gasa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="contenido/icono.png">
+
+<style>
+
+:root{
+    --primary:#1FA187;
+    --secondary:#0D5C91;
+    --dark:#142033;
+    --light:#F4F7FB;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#f4f7fb;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 20px;
+    overflow-x:hidden;
+    color:var(--dark);
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+/* HEADER */
+
+header{
+    width:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1000;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(255,255,255,.5);
+    box-shadow:0 8px 30px rgba(15,23,42,.04);
+}
+
+.nav{
+    height:85px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:relative;
+}
+
+/* LOGO HEADER */
+
+.nav-logo{
+    font-size:1.4rem;
+    font-weight:800;
+    color:#0f172a;
+    z-index:1002;
+}
+
+.nav-logo span{
+    color:#0077ff;
+}
+
+/* LINKS */
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:35px;
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#334155;
+    font-weight:500;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#0077ff;
+}
+
+/* BUTTON */
+
+.btn{
+    padding:14px 28px;
+    border-radius:999px;
+    text-decoration:none;
+    background:linear-gradient(135deg,#0077ff,#00c6ff);
+    color:#fff;
+    font-weight:600;
+    box-shadow:0 10px 30px rgba(0,119,255,.25);
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.desktop-btn{
+    display:flex;
+}
+
+.mobile-btn{
+    display:none;
+}
+
+/* HAMBURGER */
+
+.menu-toggle{
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:5px;
+    cursor:pointer;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    transition:.3s;
+    z-index:1002;
+}
+
+.menu-toggle span{
+    width:22px;
+    height:2px;
+    background:#0f172a;
+    border-radius:999px;
+    transition:.3s;
+}
+
+.menu-toggle.active span:nth-child(1){
+    transform:translateY(7px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2){
+    opacity:0;
+}
+
+.menu-toggle.active span:nth-child(3){
+    transform:translateY(-7px) rotate(-45deg);
+}
+
+.main-content{
+    padding-top:140px;
+    padding-bottom:60px;
+}
+
+/* FONDO */
+
+.bg{
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at top left,rgba(31,161,135,0.12),transparent 30%),
+    radial-gradient(circle at bottom right,rgba(13,92,145,0.12),transparent 30%),
+    linear-gradient(180deg,#ffffff,#eef3f9);
+    z-index:-1;
+}
+
+/* CONTENEDOR */
+
+.container{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    padding:0 24px;
+}
+
+/* CARD */
+
+.form-card{
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.7);
+    border-radius:34px;
+    padding:45px;
+    box-shadow:
+    0 20px 60px rgba(13,92,145,0.08),
+    0 5px 20px rgba(31,161,135,0.05);
+}
+
+/* LOGO */
+
+.logo{
+    width:220px;
+    margin-bottom:25px;
+}
+
+.logo img{
+    width:100%;
+    object-fit:contain;
+}
+
+/* TEXTOS */
+
+h1{
+    font-size:38px;
+    font-weight:800;
+    margin-bottom:12px;
+    color:#142033;
+}
+
+.subtitle{
+    color:#5d6b82;
+    margin-bottom:40px;
+    line-height:1.7;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.input-group.full{
+    grid-column:1/3;
+}
+
+/* LABELS */
+
+label{
+    margin-bottom:10px;
+    color:#1d2b3f;
+    font-size:14px;
+    font-weight:700;
+}
+
+/* INPUTS */
+
+input,
+select{
+    width:100%;
+    padding:18px;
+    border-radius:18px;
+    outline:none;
+    background:white;
+    color:#162033;
+    font-size:15px;
+    border:1px solid #dbe4ef;
+    transition:0.3s;
+}
+
+input:focus,
+select:focus{
+    border-color:var(--primary);
+    box-shadow:0 0 0 5px rgba(31,161,135,0.12);
+}
+
+input::placeholder{
+    color:#8b97aa;
+}
+
+/* FILES */
+
+.file-box{
+    position:relative;
+    background:#f8fbff;
+    border:2px dashed rgba(13,92,145,0.18);
+    border-radius:24px;
+    padding:35px;
+    text-align:center;
+    transition:0.3s;
+    overflow:hidden;
+}
+
+.file-box:hover{
+    border-color:var(--primary);
+    background:rgba(31,161,135,0.04);
+}
+
+.file-box.dragover{
+    border-color:var(--primary);
+    background:rgba(31,161,135,0.08);
+    transform:scale(1.01);
+}
+
+.file-box input{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    cursor:pointer;
+}
+
+.file-title{
+    font-weight:800;
+    color:#16304f;
+    margin-bottom:10px;
+    font-size:17px;
+}
+
+.file-sub{
+    color:#6f7d92;
+    font-size:14px;
+}
+
+/* PREVIEW */
+
+.preview{
+    margin-top:20px;
+}
+
+.preview-image{
+    width:100%;
+    max-height:250px;
+    object-fit:cover;
+    border-radius:18px;
+    border:1px solid #dbe4ef;
+}
+
+.pdf-preview{
+    background:#eef5ff;
+    padding:18px;
+    border-radius:16px;
+    font-weight:700;
+    color:#0D5C91;
+    word-break:break-word;
+}
+
+.success{
+    margin-top:12px;
+    color:#1FA187;
+    font-weight:700;
+    font-size:14px;
+    animation:fade .4s ease;
+}
+
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* CHECKBOX */
+
+.checkbox{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    margin-top:28px;
+}
+
+.checkbox input{
+    width:auto;
+    margin-top:3px;
+}
+
+.checkbox span{
+    color:#5d6b82;
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* BUTTON */
+
+button{
+    width:100%;
+    padding:20px;
+    border:none;
+    border-radius:22px;
+    background:linear-gradient(135deg,#1FA187,#0D5C91);
+    color:white;
+    font-size:17px;
+    font-weight:800;
+    cursor:pointer;
+    margin-top:35px;
+    transition:0.35s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:
+    0 20px 40px rgba(13,92,145,0.18),
+    0 10px 20px rgba(31,161,135,0.12);
+}
+
+/* NOTE */
+
+.note{
+    margin-top:20px;
+    text-align:center;
+    color:#738198;
+    font-size:13px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+    .form-card{
+        padding:28px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .input-group.full{
+        grid-column:auto;
+    }
+
+    h1{
+        font-size:30px;
+    }
+
+    .logo{
+        width:80px;
+    }
+
+    .menu-toggle{
+    display:flex;
+}
+
+.desktop-btn{
+    display:none;
+}
+
+.mobile-btn{
+    display:flex;
+    margin-top:10px;
+}
+
+.nav-links{
+    position:absolute;
+    top:100px;
+    left:0;
+    width:100%;
+    padding:35px;
+    border-radius:30px;
+    background:rgba(255,255,255,.97);
+    backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,.5);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:25px;
+
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-15px);
+    transition:.35s ease;
+
+    box-shadow:0 25px 60px rgba(15,23,42,.08);
+}
+
+.nav-links.active{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0);
+}
+
+}
+
+header .btn{
+    width:auto;
+    margin-top:0;
+    border:none;
+}
+
+.ingreso-box{
+    display:none;
+}
+
+.ingreso-box.active{
+    display:block;
+    animation:fade .35s ease;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+
+<header>
+
+    <div class="container">
+
+        <div class="nav">
+
+            <div class="logo2">
+                <a href="index.html">
+                 <img src="contenido/logotipo.png" width="180" alt="Logo de Financiera Gasa" class="logo-image"/>
+                </a>
+            </div>
+
+            <ul class="nav-links" id="nav-links">
+
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="index.html#nosotros">Quiénes Somos</a></li>
+                <li><a href="servicios.html">Servicios</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="faqs.html">Preguntas Frecuentes</a></li>
+
+                <a href="formulario.html" class="btn mobile-btn">
+                    Solicita un crédito
+                </a>
+
+            </ul>
+
+            <a href="#" class="btn desktop-btn">
+                Solicitar un crédito
+            </a>
+
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<div class="main-content">
+
+    <div class="container">
+
+        <div class="form-card">
+
+<!-- LOGO -->
+<div class="logo">
+    <img src="contenido/icono.png" alt="Financiera Gasa">
+</div>
+
+<h1>Solicitud Financiera</h1>
+
+<p class="subtitle">
+Completa tu información personal y carga tus documentos oficiales
+para iniciar tu proceso de evaluación con Financiera Gasa.
+</p>
+
+<!-- FORM -->
+
+<form id="solicitudForm">
+
+<div class="grid">
+
+<!-- COMISIONISTA -->
+
+<div class="input-group full">
+
+<label>
+Primero dinos que comisionista te dió la atención:
+</label>
+
+<input 
+type="text"
+name="comisionista"
+placeholder="Ejemplo: Julio Cesar"
+required
+>
+
+<div style="
+margin-top:10px;
+padding:14px;
+border-radius:16px;
+background:rgba(31,161,135,.08);
+border:1px solid rgba(31,161,135,.15);
+font-size:13px;
+font-weight:700;
+color:#0D5C91;
+text-align:center;
+letter-spacing:.5px;
+">
+
+APRECIAMOS TU HONESTIDAD
+
+</div>
+
+</div>
+
+<!-- NOMBRE -->
+<div class="input-group">
+<label>Nombre completo</label>
+<input type="text" name="nombre" placeholder="Tu nombre completo" required>
+</div>
+
+<!-- TEL -->
+<div class="input-group">
+<label>Teléfono</label>
+<input 
+type="tel" 
+name="telefono" 
+placeholder="662 000 0000"
+required
+pattern="[0-9]{10}"
+maxlength="10"
+inputmode="numeric"
+title="Ingresa exactamente 10 dígitos"
+>
+</div>
+
+<div class="input-group">
+<label>Teléfono 2 (Opcional)</label>
+<input 
+type="tel" 
+name="telefono2" 
+placeholder="662 000 0000"
+pattern="[0-9]{10}"
+maxlength="10"
+inputmode="numeric"
+title="Ingresa exactamente 10 dígitos"
+>
+</div>
+
+<!-- INE -->
+<div class="input-group full">
+
+<label>FRENTE INE oficial</label>
+
+<div class="file-box">
+
+<input 
+type="file" 
+name="ine_frente" 
+accept=".jpg,.jpeg,.png,.pdf"
+required
+class="file-input"
+>
+
+<div class="file-title">
+Subir identificación oficial
+</div>
+
+<div class="file-sub">
+PDF, JPG, PNG o PDF
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+<!-- INE REVERSO -->
+<div class="input-group full">
+
+<label>REVERSO INE oficial</label>
+
+<div class="file-box">
+
+<input 
+type="file" 
+name="ine_reverso" 
+accept=".jpg,.jpeg,.png,.pdf"
+required
+class="file-input"
+>
+
+<div class="file-title">
+Subir identificación oficial
+</div>
+
+<div class="file-sub">
+PDF, JPG, PNG o PDF
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+<!-- DOMICILIO -->
+<div class="input-group full">
+
+<label>Comprobante de domicilio</label>
+
+<div class="file-box">
+
+<input 
+type="file" 
+name="domicilio" 
+accept=".jpg,.jpeg,.png,.pdf"
+required
+class="file-input"
+>
+
+<div class="file-title">
+Subir comprobante
+</div>
+
+<div class="file-sub">
+Recibo de luz, agua o internet
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+<!-- TIPO DE INGRESOS -->
+<div class="input-group full">
+
+<label>¿Cómo compruebas tus ingresos?</label>
+
+<select id="tipoIngreso" name="tipo_ingreso" required>
+
+<option value="">
+Selecciona una opción
+</option>
+
+<option value="nomina">
+Tengo nómina
+</option>
+
+<option value="independiente">
+Soy independiente
+</option>
+
+<option value="sin_nomina">
+Sin nómina
+</option>
+
+</select>
+
+</div>
+
+<!-- INFORMACIÓN LABORAL -->
+
+<div class="ingreso-box full" id="infoTrabajoBox">
+
+    <div style="
+        padding:22px;
+        border-radius:22px;
+        background:rgba(13,92,145,.05);
+        border:1px solid rgba(13,92,145,.12);
+        margin-top:5px;
+    ">
+
+        <h3 style="
+            font-size:20px;
+            margin-bottom:12px;
+            color:#142033;
+            font-weight:800;
+        ">
+            Información de trabajo
+        </h3>
+
+        <div style="
+    margin-bottom:18px;
+    padding:12px 14px;
+    border-radius:14px;
+    background:rgba(31,161,135,.08);
+    border:1px solid rgba(31,161,135,.15);
+    font-size:13px;
+    color:#1d2b3f;
+    line-height:1.6;
+    font-weight:600;
+">
+    *Si te dedicas a las plataformas, pon la palabra <b>plataforma</b> en todas las líneas de la información de trabajo*
+</div>
+
+        <p style="
+            color:#5d6b82;
+            line-height:1.7;
+            margin-bottom:24px;
+            font-size:14px;
+        ">
+            Favor de proporcionarnos la siguiente información:
+        </p>
+
+        <div class="grid">
+
+            <!-- DIRECCIÓN -->
+
+            <div class="input-group full">
+
+                <label>
+                    Dirección completa del trabajo
+                </label>
+
+                <input 
+                type="text"
+                name="direccion_trabajo"
+                placeholder="Calle, número, colonia/fraccionamiento y código postal"
+                >
+
+            </div>
+
+            <!-- HORARIO -->
+
+            <div class="input-group">
+
+                <label>
+                    Horario
+                </label>
+
+                <input 
+                type="text"
+                name="horario_trabajo"
+                placeholder="Ejemplo: 8:00 AM - 5:00 PM"
+                >
+
+            </div>
+
+            <!-- PUESTO -->
+
+            <div class="input-group">
+
+                <label>
+                    Puesto
+                </label>
+
+                <input 
+                type="text"
+                name="puesto_trabajo"
+                placeholder="Ejemplo: Cajero, Supervisor..."
+                >
+
+            </div>
+
+            <!-- EMPRESA -->
+
+            <div class="input-group full">
+
+                <label>
+                    Nombre de la empresa o negocio
+                </label>
+
+                <input 
+                type="text"
+                name="empresa_trabajo"
+                placeholder="Nombre de la empresa o negocio"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- NÓMINA -->
+<div class="input-group full ingreso-box" id="nominaBox">
+
+<label>Subir comprobante de nómina</label>
+
+<div class="file-box">
+
+<input 
+type="file"
+name="nomina_file"
+accept=".jpg,.jpeg,.png,.pdf"
+class="file-input"
+>
+
+<div class="file-title">
+Subir comprobante
+</div>
+
+<div class="file-sub">
+Recibos de nómina o comprobantes
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+<!-- INDEPENDIENTE -->
+<div class="ingreso-box full" id="independienteBox">
+
+<div class="input-group full">
+
+<label>Describe tu actividad</label>
+
+<input 
+type="text"
+name="actividad_independiente"
+placeholder="Ejemplo: Venta de comida, Uber, negocio propio..."
+>
+
+</div>
+
+<div class="input-group full">
+
+<label>Subir estado de cuenta, carta de trabajo o evidencia</label>
+
+<div class="file-box">
+
+<input 
+type="file"
+name="independiente_file"
+accept=".jpg,.jpeg,.png,.pdf"
+class="file-input"
+>
+
+<div class="file-title">
+Subir archivo
+</div>
+
+<div class="file-sub">
+Estado de cuenta, evidencia de ingresos, etc.
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SIN NÓMINA -->
+<div class="ingreso-box full" id="sinNominaBox">
+
+<div class="input-group full">
+
+<label>Describe cómo generas ingresos</label>
+
+<input 
+type="text"
+name="descripcion_ingresos"
+placeholder="Ejemplo: Trabajo informal, ventas, apoyo familiar..."
+>
+
+</div>
+
+<div class="input-group full">
+
+<label>Subir evidencia de ingresos</label>
+
+<div class="file-box">
+
+<input 
+type="file"
+name="sin_nomina_file"
+accept=".jpg,.jpeg,.png,.pdf"
+class="file-input"
+>
+
+<div class="file-title">
+Subir archivo
+</div>
+
+<div class="file-sub">
+Estado de cuenta, depósitos, referencias, etc.
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+     SECCIÓN AVAL
+========================= -->
+
+<div class="input-group full" style="margin-top:40px;">
+
+    <div style="
+        padding:18px 24px;
+        border-radius:20px;
+        background:linear-gradient(135deg,rgba(31,161,135,.08),rgba(13,92,145,.08));
+        border:1px solid rgba(13,92,145,.12);
+    ">
+
+        <h2 style="
+            font-size:24px;
+            margin-bottom:8px;
+            color:#142033;
+            font-weight:800;
+        ">
+            Documentación del Aval
+        </h2>
+
+        <p style="
+            color:#5d6b82;
+            line-height:1.6;
+            font-size:14px;
+        ">
+            Agrega los documentos oficiales del aval o responsable solidario.
+        </p>
+
+    </div>
+
+</div>
+
+<!-- NOMBRE AVAL -->
+
+<div class="input-group">
+<label>Nombre completo del aval</label>
+
+<input 
+type="text"
+name="aval_nombre"
+placeholder="Nombre del aval"
+required
+>
+
+</div>
+
+<!-- TEL AVAL -->
+
+<div class="input-group">
+<label>Teléfono del aval</label>
+
+<input 
+type="tel"
+name="aval_telefono"
+placeholder="662 000 0000"
+required
+pattern="[0-9]{10}"
+maxlength="10"
+inputmode="numeric"
+title="Ingresa exactamente 10 dígitos"
+>
+
+</div>
+
+<div class="input-group">
+<label>Teléfono 2 del aval (Opcional)</label>
+
+<input 
+type="tel"
+name="aval_telefono2"
+placeholder="662 000 0000"
+pattern="[0-9]{10}"
+maxlength="10"
+inputmode="numeric"
+title="Ingresa exactamente 10 dígitos"
+>
+
+</div>
+
+<!-- INE FRENTE AVAL -->
+
+<div class="input-group full">
+
+<label>INE del aval (Frente)</label>
+
+<div class="file-box">
+
+<input 
+type="file" 
+name="aval_ine_frente" 
+accept=".jpg,.jpeg,.png,.pdf"
+required
+class="file-input"
+>
+
+<div class="file-title">
+Subir identificación oficial
+</div>
+
+<div class="file-sub">
+PDF, JPG o PNG
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+<!-- INE REVERSO AVAL -->
+
+<div class="input-group full">
+
+<label>INE del aval (Reverso)</label>
+
+<div class="file-box">
+
+<input 
+type="file" 
+name="aval_ine_reverso" 
+accept=".jpg,.jpeg,.png,.pdf"
+required
+class="file-input"
+>
+
+<div class="file-title">
+Subir identificación oficial
+</div>
+
+<div class="file-sub">
+PDF, JPG o PNG
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+<!-- DOMICILIO AVAL -->
+
+<div class="input-group full">
+
+<label>Comprobante de domicilio del aval</label>
+
+<div class="file-box">
+
+<input 
+type="file" 
+name="aval_domicilio" 
+accept=".jpg,.jpeg,.png,.pdf"
+required
+class="file-input"
+>
+
+<div class="file-title">
+Subir comprobante
+</div>
+
+<div class="file-sub">
+Recibo de luz, agua o internet
+</div>
+
+<div class="preview"></div>
+
+</div>
+
+</div>
+
+<!-- CHECK -->
+
+<div class="checkbox">
+
+<input type="checkbox" required>
+
+<span>
+Acepto el <a href="aviso-privacidad.html">aviso de privacidad</a> y autorizo el uso de mis datos
+para validación y evaluación financiera.
+</span>
+
+</div>
+
+<!-- BUTTON -->
+
+<button type="submit">
+Enviar Solicitud
+</button>
+
+<p class="note">
+Tus datos se encuentran protegidos mediante conexión segura.
+</p>
+
+</form>
+
+</div>
+</div>
+
+<script>
+
+/* PREVIEW Y DRAG & DROP */
+
+const fileInputs = document.querySelectorAll('.file-input');
+
+fileInputs.forEach(input => {
+
+    const box = input.closest('.file-box');
+
+    /* DRAG */
+
+    box.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        box.classList.add('dragover');
+    });
+
+    box.addEventListener('dragleave', () => {
+        box.classList.remove('dragover');
+    });
+
+    box.addEventListener('drop', (e) => {
+
+        e.preventDefault();
+
+        box.classList.remove('dragover');
+
+        input.files = e.dataTransfer.files;
+
+        updatePreview(input);
+
+    });
+
+    /* CHANGE */
+
+    input.addEventListener('change', () => {
+        updatePreview(input);
+    });
+
+});
+
+/* UPDATE PREVIEW */
+
+function updatePreview(input){
+
+    const box = input.closest('.file-box');
+
+    const preview = box.querySelector('.preview');
+
+    const file = input.files[0];
+
+    if(!file) return;
+
+    /* IMAGE */
+
+    if(file.type.startsWith('image/')){
+
+        const reader = new FileReader();
+
+        reader.onload = function(e){
+
+            preview.innerHTML = `
+            
+            <img src="${e.target.result}" class="preview-image">
+
+            <div class="success">
+                ✓ Imagen cargada correctamente
+            </div>
+
+            `;
+
+        }
+
+        reader.readAsDataURL(file);
+
+    }
+
+    /* PDF */
+
+    else if(file.type === "application/pdf"){
+
+        preview.innerHTML = `
+        
+        <div class="pdf-preview">
+            📄 ${file.name}
+        </div>
+
+        <div class="success">
+            ✓ PDF cargado correctamente
+        </div>
+
+        `;
+
+    }
+
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const supabaseClient = supabase.createClient(
+    "https://xilsdgjvqawroztfbwmu.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpbHNkZ2p2cWF3cm96dGZid211Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk0MzExNTgsImV4cCI6MjA5NTAwNzE1OH0.0NUvn6SeKdbr2RqS7s_8Qg7RVCDGMY4lP65JKbWf0WE"
+);
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+
+emailjs.init("cfn5wG_R4U7Jl1Jee");
+
+const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
+
+function validateFile(file, label){
+
+    if(!file){
+
+        throw new Error(`Falta subir el archivo: ${label}`);
+
+    }
+
+    /* TAMAÑO */
+
+    if(file.size > MAX_FILE_SIZE){
+
+        const mb = (file.size / 1024 / 1024).toFixed(1);
+
+        throw new Error(
+            `${label} pesa ${mb}MB y supera el límite de 25MB`
+        );
+
+    }
+
+    /* FORMATOS */
+
+const allowed = [
+    "image/jpeg",
+    "image/png",
+    "image/heic",
+    "image/heif",
+    "application/pdf"
+];
+
+    if(!allowed.includes(file.type)){
+
+        throw new Error(
+            `${label} tiene un formato inválido`
+        );
+
+    }
+
+}
+
+/* =========================================
+   ENVÍO FORMULARIO
+========================================= */
+
+const form = document.getElementById("solicitudForm");
+
+form.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    const boton = form.querySelector("button");
+
+    boton.disabled = true;
+    boton.innerHTML = "Enviando...";
+
+    try {
+
+        /* DATOS */
+
+        const comisionista = form.comisionista.value;
+        const nombre = form.nombre.value;
+        const telefono = form.telefono.value;
+        const telefono2 = form.telefono2.value;
+        const avalNombre = form.aval_nombre.value;
+        const avalTelefono = form.aval_telefono.value;
+        const avalTelefono2 = form.aval_telefono2.value || "";
+
+        /* ARCHIVOS */
+
+        const ineFrenteFile = form.ine_frente.files[0];
+        const ineReversoFile = form.ine_reverso.files[0];
+        const domicilioFile = form.domicilio.files[0];
+        const avalIneFrenteFile = form.aval_ine_frente.files[0];
+        const avalIneReversoFile = form.aval_ine_reverso.files[0];
+        const avalDomicilioFile = form.aval_domicilio.files[0];
+        const tipoIngreso = form.tipo_ingreso.value;
+
+let ingresosFile = null;
+
+if(tipoIngreso === "nomina"){
+
+    ingresosFile = form.nomina_file.files[0];
+
+}
+
+if(tipoIngreso === "independiente"){
+
+    ingresosFile = form.independiente_file.files[0];
+
+}
+
+if(tipoIngreso === "sin_nomina"){
+
+    ingresosFile = form.sin_nomina_file.files[0];
+
+}
+
+const actividadIndependiente =
+form.actividad_independiente?.value || "";
+
+const descripcionIngresos =
+form.descripcion_ingresos?.value || "";
+
+const direccionTrabajo =
+form.direccion_trabajo?.value || "";
+
+const horarioTrabajo =
+form.horario_trabajo?.value || "";
+
+const puestoTrabajo =
+form.puesto_trabajo?.value || "";
+
+const empresaTrabajo =
+form.empresa_trabajo?.value || "";
+
+        const time = Date.now();
+
+validateFile(ineFrenteFile, "INE Frente");
+validateFile(ineReversoFile, "INE Reverso");
+validateFile(domicilioFile, "Comprobante de domicilio");
+validateFile(ingresosFile, "Comprobante de ingresos");
+validateFile(avalIneFrenteFile, "INE Frente Aval");
+validateFile(avalIneReversoFile, "INE Reverso Aval");
+validateFile(avalDomicilioFile, "Comprobante domicilio Aval");
+
+        /* NOMBRES */
+
+function cleanFileName(fileName) {
+
+    return fileName
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9.-]/g, "_");
+
+}
+
+const ineFrenteName = `${time}-frente-${cleanFileName(ineFrenteFile.name)}`;
+
+const ineReversoName = `${time}-reverso-${cleanFileName(ineReversoFile.name)}`;
+
+const domicilioName = `${time}-${cleanFileName(domicilioFile.name)}`;
+
+const ingresosName = `${time}-${cleanFileName(ingresosFile.name)}`;
+
+const avalFrenteName = `${time}-aval-frente-${cleanFileName(avalIneFrenteFile.name)}`;
+
+const avalReversoName = `${time}-aval-reverso-${cleanFileName(avalIneReversoFile.name)}`;
+
+const avalDomicilioName = `${time}-aval-domicilio-${cleanFileName(avalDomicilioFile.name)}`;
+
+        /* SUBIR INE */
+
+const { error: ineFrenteError } = await supabaseClient.storage
+.from("documentos")
+.upload(ineFrenteName, ineFrenteFile, {
+    cacheControl: "3600",
+    upsert: true,
+    contentType: ineFrenteFile.type
+});
+
+if (ineFrenteError) {
+
+    throw new Error(
+        `Error al subir INE Frente: ${ineFrenteError.message}`
+    );
+
+}
+
+const { error: ineReversoError } = await supabaseClient.storage
+.from("documentos")
+.upload(ineReversoName, ineReversoFile, {
+    cacheControl: "3600",
+    upsert: true,
+    contentType: ineReversoFile.type
+});
+
+if (ineReversoError) {
+
+    throw new Error(
+        `Error al subir INE Reverso: ${ineReversoError.message}`
+    );
+
+}
+
+        /* SUBIR DOMICILIO */
+
+        const { error: domicilioError } = await supabaseClient.storage
+        .from("documentos")
+        .upload(domicilioName, domicilioFile, {
+            upsert: true
+        });
+
+        if (domicilioError) throw domicilioError;
+
+        /* SUBIR INGRESOS */
+
+        const { error: ingresosError } = await supabaseClient.storage
+        .from("documentos")
+        .upload(ingresosName, ingresosFile, {
+            upsert: true
+        });
+
+        if (ingresosError) throw ingresosError;
+
+        /* SUBIR AVAL */
+
+const { error: avalFrenteError } = await supabaseClient.storage
+.from("documentos")
+.upload(avalFrenteName, avalIneFrenteFile, {
+    upsert:true,
+    contentType: avalIneFrenteFile.type
+});
+
+if (avalFrenteError) {
+    console.log("ERROR AVAL FRENTE:", avalFrenteError);
+    throw new Error(
+        `Error aval frente: ${avalFrenteError.message}`
+    );
+}
+
+const { error: avalReversoError } = await supabaseClient.storage
+.from("documentos")
+.upload(avalReversoName, avalIneReversoFile, {
+    upsert:true,
+    contentType: avalIneReversoFile.type
+});
+
+if (avalReversoError) {
+    console.log("ERROR AVAL REVERSO:", avalReversoError);
+    throw new Error(
+        `Error aval reverso: ${avalReversoError.message}`
+    );
+}
+
+const { error: avalDomicilioError } = await supabaseClient.storage
+.from("documentos")
+.upload(avalDomicilioName, avalDomicilioFile, {
+    upsert:true,
+    contentType: avalDomicilioFile.type
+});
+
+if (avalDomicilioError) {
+    console.log("ERROR AVAL DOMICILIO:", avalDomicilioError);
+    throw new Error(
+        `Error aval domicilio: ${avalDomicilioError.message}`
+    );
+}
+
+        /* URLS */
+
+const ineFrenteURL = supabaseClient
+.storage
+.from("documentos")
+.getPublicUrl(ineFrenteName).data.publicUrl;
+
+const ineReversoURL = supabaseClient
+.storage
+.from("documentos")
+.getPublicUrl(ineReversoName).data.publicUrl;
+
+        const domicilioURL = supabaseClient
+        .storage
+        .from("documentos")
+        .getPublicUrl(domicilioName).data.publicUrl;
+
+        const ingresosURL = supabaseClient
+        .storage
+        .from("documentos")
+        .getPublicUrl(ingresosName).data.publicUrl;
+
+        const avalFrenteURL = supabaseClient
+.storage
+.from("documentos")
+.getPublicUrl(avalFrenteName).data.publicUrl;
+
+const avalReversoURL = supabaseClient
+.storage
+.from("documentos")
+.getPublicUrl(avalReversoName).data.publicUrl;
+
+const avalDomicilioURL = supabaseClient
+.storage
+.from("documentos")
+.getPublicUrl(avalDomicilioName).data.publicUrl;
+
+        /* GUARDAR EN TABLA */
+
+const { error } = await supabaseClient
+.from("solicitudes")
+.insert([{
+
+    comisionista,
+    nombre,
+    telefono,
+    telefono2,
+
+    tipo_ingreso: tipoIngreso,
+
+    actividad_independiente: actividadIndependiente,
+
+    descripcion_ingresos: descripcionIngresos,
+
+    direccion_trabajo: direccionTrabajo,
+
+    horario_trabajo: horarioTrabajo,
+
+    puesto_trabajo: puestoTrabajo,
+
+    empresa_trabajo: empresaTrabajo,
+
+    ine_frente_url: ineFrenteURL,
+    ine_reverso_url: ineReversoURL,
+    domicilio_url: domicilioURL,
+    ingresos_url: ingresosURL,
+
+    /* =====================
+       DATOS DEL AVAL
+    ===================== */
+
+    aval_nombre: avalNombre,
+
+    aval_telefono: avalTelefono,
+
+    aval_telefono2: avalTelefono2,
+
+    aval_ine_frente_url: avalFrenteURL,
+
+    aval_ine_reverso_url: avalReversoURL,
+
+    aval_domicilio_url: avalDomicilioURL
+
+}]);
+
+        if (error) {
+    console.log(error);
+    alert(error.message);
+    throw error;
+}
+
+        /* TEMPLATE EMAIL */
+
+const templateParams = {
+
+    comisionista: comisionista,
+    nombre: nombre,
+    telefono: telefono,
+    telefono2: telefono2,
+
+    tipo_ingreso: tipoIngreso,
+
+    actividad_independiente: actividadIndependiente,
+
+    descripcion_ingresos: descripcionIngresos,
+
+    direccion_trabajo: direccionTrabajo,
+
+    horario_trabajo: horarioTrabajo,
+
+    puesto_trabajo: puestoTrabajo,
+
+    empresa_trabajo: empresaTrabajo,
+
+    ine_frente: ineFrenteURL,
+
+    ine_reverso: ineReversoURL,
+
+    domicilio: domicilioURL,
+
+    ingresos_file: ingresosURL,
+
+    /* =====================
+       DATOS DEL AVAL
+    ===================== */
+
+    aval_nombre: avalNombre,
+
+    aval_telefono: avalTelefono,
+
+    aval_telefono2: avalTelefono2,
+
+    aval_ine_frente: avalFrenteURL,
+
+    aval_ine_reverso: avalReversoURL,
+
+    aval_domicilio: avalDomicilioURL
+
+};
+
+        /* ENVIAR EMAIL */
+
+await emailjs.send(
+    "service_79u79eq",
+    "template_tgpe8bi",
+    templateParams,
+    "cfn5wG_R4U7Jl1Jee"
+);
+
+        /* POPUP */
+
+        openPopup();
+
+        /* LIMPIAR FORM */
+
+        form.reset();
+
+        document.querySelectorAll(".preview").forEach(p => {
+            p.innerHTML = "";
+        });
+
+    }
+
+catch(err){
+
+    console.error("ERROR COMPLETO:", err);
+
+    let mensaje = "Error al enviar formulario";
+
+    if(err.message){
+
+        mensaje = err.message;
+
+    }
+
+    /* ERROR RED */
+
+    if(
+        err.message &&
+        err.message.toLowerCase().includes("network")
+    ){
+
+        mensaje = "Error de conexión a internet";
+
+    }
+
+    /* ERROR STORAGE */
+
+    if(
+        err.message &&
+        err.message.toLowerCase().includes("storage")
+    ){
+
+        mensaje = "Error al subir archivos al servidor";
+
+    }
+
+    /* ERROR PESO */
+
+    if(
+        err.message &&
+        err.message.toLowerCase().includes("too large")
+    ){
+
+        mensaje = "Uno de los archivos es demasiado pesado";
+
+    }
+
+    alert(mensaje);
+
+}
+
+    boton.disabled = false;
+    boton.innerHTML = "Enviar Solicitud";
+
+});
+
+</script>
+
+<!-- POPUP EXITO -->
+
+<div id="successPopup" class="popup">
+
+    <div class="popup-card">
+
+        <div class="popup-icon">
+            ✓
+        </div>
+
+        <h2>Solicitud enviada</h2>
+
+        <p>
+            Tu información fue enviada correctamente.
+            En breve un asesor se pondrá en contacto contigo.
+        </p>
+
+        <button onclick="closePopup()">
+            Continuar
+        </button>
+
+    </div>
+
+</div>
+
+<style>
+
+.popup{
+    position:fixed;
+    inset:0;
+    background:rgba(10,20,35,.55);
+    backdrop-filter:blur(10px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    opacity:0;
+    pointer-events:none;
+    transition:.35s;
+}
+
+.popup.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.popup-card{
+    width:90%;
+    max-width:420px;
+    background:white;
+    border-radius:32px;
+    padding:40px;
+    text-align:center;
+    transform:translateY(20px) scale(.96);
+    transition:.35s;
+    box-shadow:
+    0 25px 60px rgba(0,0,0,.15);
+}
+
+.popup.show .popup-card{
+    transform:translateY(0) scale(1);
+}
+
+.popup-icon{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    margin:auto;
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:42px;
+    font-weight:900;
+    color:white;
+    background:linear-gradient(135deg,#1FA187,#0D5C91);
+    box-shadow:
+    0 10px 30px rgba(31,161,135,.25);
+}
+
+.popup h2{
+    font-size:30px;
+    margin-bottom:14px;
+    color:#142033;
+}
+
+.popup p{
+    color:#5d6b82;
+    line-height:1.7;
+    margin-bottom:28px;
+}
+
+.popup button{
+    margin-top:0;
+}
+
+</style>
+
+<script>
+
+function openPopup(){
+    document.getElementById("successPopup").classList.add("show");
+}
+
+function closePopup(){
+    document.getElementById("successPopup").classList.remove("show");
+}
+
+</script>
+
+<script>
+
+const menuToggle = document.getElementById('menu-toggle');
+const navLinks = document.getElementById('nav-links');
+
+menuToggle.addEventListener('click', () => {
+
+    menuToggle.classList.toggle('active');
+    navLinks.classList.toggle('active');
+
+});
+
+</script>
+
+<script>
+
+const tipoIngreso = document.getElementById("tipoIngreso");
+
+const nominaBox = document.getElementById("nominaBox");
+
+const independienteBox = document.getElementById("independienteBox");
+
+const sinNominaBox = document.getElementById("sinNominaBox");
+
+const infoTrabajoBox = document.getElementById("infoTrabajoBox");
+
+tipoIngreso.addEventListener("change", () => {
+
+    nominaBox.classList.remove("active");
+    independienteBox.classList.remove("active");
+    sinNominaBox.classList.remove("active");
+    infoTrabajoBox.classList.remove("active");
+
+    if(tipoIngreso.value !== ""){
+
+        infoTrabajoBox.classList.add("active");
+
+    }
+
+    if(tipoIngreso.value === "nomina"){
+
+        nominaBox.classList.add("active");
+
+    }
+
+    if(tipoIngreso.value === "independiente"){
+
+        independienteBox.classList.add("active");
+
+    }
+
+    if(tipoIngreso.value === "sin_nomina"){
+
+        sinNominaBox.classList.add("active");
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
